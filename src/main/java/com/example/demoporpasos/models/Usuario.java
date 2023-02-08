@@ -9,8 +9,9 @@ public class Usuario {
     private  String password;
 
     public Long getId() {
+
         return id;
-    }
+    }//ejemplo
 
     public void setId(Long id) {
         this.id = id;
