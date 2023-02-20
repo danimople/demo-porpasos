@@ -28,4 +28,6 @@ if(repetirPassword != datos.password){
     //Esto agarra un objeto de javaScript y la transforma a un String de json
     body: JSON.stringify(datos)
   });
+  alert("La cuenta fue creada con éxito");
+  window.location.href = 'login.html'
 }
