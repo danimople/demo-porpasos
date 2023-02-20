@@ -18,9 +18,11 @@ async function iniciarSesion(){
     //Esto agarra un objeto de javaScript y la transforma a un String de json
     body: JSON.stringify(datos)
   });
-  const respuesta= await request.text();
 
-  if(respuesta == 'OK'){
+  const respuesta= await request.text();
+  if(respuesta != 'FAIL'){
+    localStorage.token = respuesta;
+    localStorage.email = datos.email;
     window.location.href = 'usuarios.html'
   }else{
     alert("Las credenciales son incorrectas.")

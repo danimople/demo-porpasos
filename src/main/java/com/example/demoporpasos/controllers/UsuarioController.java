@@ -2,6 +2,7 @@ package com.example.demoporpasos.controllers;
 
 import com.example.demoporpasos.dao.UsuarioDao;
 import com.example.demoporpasos.models.Usuario;
+import com.example.demoporpasos.utils.JWTUtil;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioDao usuarioDao;
+
+    @Autowired
+    private JWTUtil jwtUtil;
     @RequestMapping(value = "api/usuarios/{id}", method = RequestMethod.GET)
     public Usuario getUsuario(@PathVariable Long id) {
         Usuario usuario = new Usuario();
@@ -38,9 +42,16 @@ public class UsuarioController {
     }
 
     @RequestMapping(value = "api/usuarios", method = RequestMethod.GET)
-    public List<Usuario> getUsuarios() {
-
+    public List<Usuario> getUsuarios(@RequestHeader(value = "Authorization") String token) {
+        if (!validarToken(token)){
+            return null;
+        }
         return usuarioDao.getUsuarios();
+    }
+
+    private boolean validarToken(String token){
+        String usuarioId = jwtUtil.getKey(token);
+        return  usuarioId != null;
     }
 
     @RequestMapping(value = "api/usuario123")
@@ -55,19 +66,12 @@ public class UsuarioController {
     }
 
     @RequestMapping(value = "api/usuarios/{id}", method = RequestMethod.DELETE)
-    public void eliminar(@PathVariable Long id) {
+    public void eliminar(@RequestHeader(value = "Authorization") String token,
+                         @PathVariable Long id) {
+        if (!validarToken(token)){
+            return;
+        }
         usuarioDao.eliminar(id);
-
-    }
-
-    @RequestMapping(value = "api/usuario125")
-    public Usuario buscar() {
-        Usuario usuario = new Usuario();
-        usuario.setNombre("Daniel");
-        usuario.setApellido("Moreno");
-        usuario.setEmail("danimople@gmail.com");
-        usuario.setTelefono("65159195");
-        return usuario;
 
     }
 }
