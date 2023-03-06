@@ -14,9 +14,6 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
 
-/**
- * @author Mahesh, modificado por Julio León para evitar métodos depreciados y mejorar un poco el código
- */
 @Component
 public class JWTUtil {
     @Value("${security.jwt.secret}")
